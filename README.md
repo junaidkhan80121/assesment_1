@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+## Important Notice on Google and Outlook IMAP Access
+As of **January 2025**, Google (Gmail) and Outlook no longer support app passwords and less secure apps for IMAP authentication. Users must use OAuth authentication instead.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+More details:
+- [Google Support](https://support.google.com/a/answer/6260879?hl=en)
 
-## Available Scripts
+## License
+This project is licensed under the MIT License.
 
-In the project directory, you can run:
+# Email Authentication and Listing API
 
-### `npm start`
+This project is a Flask-based backend for handling user authentication and retrieving emails via IMAP. The API supports registration, login, and fetching emails from different email providers.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
+- **User Authentication:** Register and login users with email and password.
+- **JWT Token-Based Authentication:** Secure API endpoints with JWT tokens.
+- **Fetch Emails via IMAP:** Retrieve emails from Yahoo, Gmail, and Outlook.
+- **MongoDB Integration:** Store user data securely in MongoDB.
+- **CORS Support:** Enables communication with frontend applications.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Setup and Installation
 
-### `npm test`
+### Prerequisites
+- Python 3.x
+- MongoDB
+- An IMAP email account (Yahoo, Gmail, Outlook, etc.)
+- Environment variables configured in a `.env` file
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Installation Steps
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-repo/email-auth-listing.git
+   cd email-auth-listing
+   ```
 
-### `npm run build`
+2. Create and activate a virtual environment:
+   ```sh
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. Install dependencies:
+   ```sh
+   pip install -r requirements.txt
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Create a `.env` file and add the following environment variables:
+   ```ini
+   SECRET_KEY=your_secret_key
+   MONGO_URI=your_mongodb_connection_string
+   IMAP_HOST_YAHOO=imap.mail.yahoo.com
+   IMAP_HOST_GMAIL=imap.gmail.com
+   IMAP_HOST_OUTLOOK=outlook.office365.com
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. Run the application:
+   ```sh
+   python app.py
+   ```
 
-### `npm run eject`
+## API Endpoints
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Register User
+**POST /register**
+- Request Body:
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "securepassword"
+  }
+  ```
+- Response:
+  ```json
+  {
+    "message": "User registered successfully"
+  }
+  ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Login User
+**POST /login**
+- Request Body:
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "securepassword"
+  }
+  ```
+- Response:
+  ```json
+  {
+    "message": "Logged in successfully",
+    "token": "your_jwt_token"
+  }
+  ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Fetch Emails
+**POST /emails**
+- Headers:
+  ```json
+  {
+    "Authorization": "Bearer your_jwt_token"
+  }
+  ```
+- Request Body:
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "emailpassword"
+  }
+  ```
+- Response:
+  ```json
+  [
+    {
+      "from": "sender@example.com",
+      "subject": "Email Subject",
+      "date": "2025-02-23T12:34:56"
+    }
+  ]
+  ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
