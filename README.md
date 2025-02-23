@@ -1,3 +1,4 @@
+########################################### NOTE: USE APP PASSWORDS TO LOGIN ######################################
 ## Important Notice on Google and Outlook IMAP Access
 As of **January 2025**, Google (Gmail) and Outlook no longer support app passwords and less secure apps for IMAP authentication. Users must use OAuth authentication instead.
 
